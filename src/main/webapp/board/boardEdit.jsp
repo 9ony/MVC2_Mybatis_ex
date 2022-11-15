@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/top.jsp"/>
 <!-- boardWrite 스타일 -->
 <style>
@@ -55,35 +57,46 @@ div.bbs{
 		return true;
 	}
 	function reset_btn(){
-		alert('dd');
-		//CKEDITOR.instances.content = "";
+		alert('리셋합니다');
+		CKEDITOR.instances.content.setData("");
 	}
 </script>
 
 <div class="container">
-	<h1>Board 글쓰기</h1>
+	<h1>Board 글수정</h1>
+	
+	<c:if test="${board==null }">
+		<script>
+			alert('해당글은 없습니다.');
+			histroy.back();
+		</script>
+	</c:if>
+	<c:if test="${board!=null }"> <!-- else대신 board!=null jstl은 elseif가없음 -->
 	<br>
 	<div class="bbs">
 	<form name="boardf" id="boardFrm" action="boardWriteEnd.do" method="POST" onsubmit="return board_check()">
+		<input type="hidden" name="num" value="${board.num }">
 		<ul>
 			<li>제목</li>
 			<li>
-				<input type="text" name="subject" id="subject" placeholder="제목">
+				<input type="text" name="subject" value="${board.subject}" id="subject" placeholder="제목">
 			</li>
 			<li>글내용</li>
 			<li>
-				<textarea name="content" id="content" rows="10" cols="50" placeholder="글내용"></textarea>
+				<textarea name="content" id="content" rows="10" cols="50" placeholder="글내용">${board.content}</textarea>
 			</li>
 			<li>첨부파일</li>
 			<li>
+			${board.filename} [ ${board.filesize } bytes]<br>
 				<input type="file" name="filename" id="filename">
 			</li>
 			<li>
-				<button class="btn">글등록</button>
-				<button type="button" class="btn" onlick="reset_btn()">다시쓰기</button>
+				<button class="btn">글수정</button>
+				<button type="button" class="btn" onclick="reset_btn()">다시쓰기</button>
 			</li>
 		</ul>
 	</form>
 	</div>
+	</c:if> 
 </div>
 <jsp:include page="/foot.jsp"/>

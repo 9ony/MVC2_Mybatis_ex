@@ -2,6 +2,7 @@ package board.model;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -43,4 +44,37 @@ public class BoardDAOMyBatis {
 		}
 		return n;
 	}
+
+	public List<BoardVO> listBoard() {
+		// TODO Auto-generated method stub
+		ses=this.getSessionFactory().openSession();
+		List<BoardVO> arr=ses.selectList(NS+".listBoard");
+		if(ses!=null) ses.close();
+		return arr;
+	}
+	//단일행 selectOne
+	//다중행 selectList
+
+	public BoardVO viewBoard(int num) {
+		try {
+			ses=this.getSessionFactory().openSession();
+			BoardVO b_view =ses.selectOne(NS+".viewBoard",num);
+			return b_view;
+		}finally {
+			close();
+		}
+	}
+	public int deleteBoard(int num) {
+		try {
+			ses=this.getSessionFactory().openSession(true); //자동커밋으로바꿈
+			int n = ses.delete(NS+".deleteBoard",num);
+			return n;
+		}finally {
+			close();
+		}
+	}
+	public void close() {
+		if(ses!=null) ses.close();
+	}
+
 }

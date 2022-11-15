@@ -5,14 +5,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="board.model.BoardMapper">
 	<!-- sql명 쓸때 태그 xml안에서 id는 유니크해야됨-->
-	<!-- <dml태그 id="유니크한값" resultType="컬럼타입"> -->
+	<!-- <dml태그 id="유니크한값" resultType="결과타입"> -->
+	<!-- resultType : _int (기본자료형 int) , int (래퍼클래스 java.lang.Integer) -->
+	<!-- parameterType : 받아오는 타입을 기술해줘야한다 #파라미터명 으로 sql문에 기술 -->
+	<!-- select는 resultType을 기술해줘야함! -->
 	<select id="totalCount" resultType="int">
 		select count(num) cnt from board
 	</select>
 	
 	<insert id="insertBoard" parameterType="board.model.BoardVO">
+	<!-- inserst는 values에 #{VO가 가진 프로퍼티명} VO의 getter를 호출한다-->
 		insert into board(num,subject,content,userid,wdate,filename,filesize)
 		values(board_seq.nextval, #{subject}, #{content}, #{userid}, systimestamp,#{filename:VARCHAR},#{filesize})
 	</insert>
+	
+	<select id="listBoard" resultType="board.model.BoardVO">
+	<!-- 제네릭 유형으로 resultType을 기술한다 -->
+		select * from board order by num desc
+	</select>
+	
+	<select id="viewBoard" resultType="board.model.BoardVO"  parameterType="_int">
+	<!-- 제네릭 유형으로 resultType을 기술한다 -->
+		select * from board where num=#{num}
+	</select>
+	
+	<!-- <select id="deleteBoard" resultType="String"  parameterType="_int">
+		delete board where num=#{num}
+	</select> -->
+	<!-- select로 했는데 왜될까.. 찾아봐야겠다 resulttype" -->
+	<delete id="deleteBoard1" parameterType="_int">
+		delete board where num=#{num}
+	</delete>
 </mapper>
 <!-- //,jdbcType=VARCHAR -->
