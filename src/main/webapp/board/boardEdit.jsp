@@ -74,8 +74,10 @@ div.bbs{
 	<c:if test="${board!=null }"> <!-- else대신 board!=null jstl은 elseif가없음 -->
 	<br>
 	<div class="bbs">
-	<form name="boardf" id="boardFrm" action="boardWriteEnd.do" method="POST" onsubmit="return board_check()">
-		<input type="hidden" name="num" value="${board.num }">
+	<form name="boardf" id="boardFrm" action="boardEdit.do" 
+	 enctype="multipart/form-data" method="POST" onsubmit="return board_check()">
+		<input type="hidden" name="num" value="${board.num}">
+		<input type="hidden" name="userid" value="${board.userid}">
 		<ul>
 			<li>제목</li>
 			<li>
@@ -89,6 +91,9 @@ div.bbs{
 			<li>
 			${board.filename} [ ${board.filesize } bytes]<br>
 				<input type="file" name="filename" id="filename">
+				<!-- 예전에 첨부했던 파일명을 old_file 이란 이름으로 넘기자 기존파일 삭제를위해서 -->
+				<input type="hidden" name="old_file" value="${board.filename }">
+				
 			</li>
 			<li>
 				<button class="btn">글수정</button>

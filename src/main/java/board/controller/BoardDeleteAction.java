@@ -1,5 +1,7 @@
 package board.controller;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,6 +32,20 @@ public class BoardDeleteAction extends AbstractAction {
 			return;
 		}
 		int num = Integer.parseInt(numstr.trim());
+		
+		//삭제할 객체 얻어오기
+		BoardVO vo=dao.viewBoard(num);
+		
+		
+		if(vo.getFilename()!=null) {
+			//첨부파일이 있다면 삭제
+			String upDir=req.getServletContext().getRealPath("/Upload");
+			File delFile=new File(upDir,vo.getFilename());
+			if(delFile!=null) {
+				delFile.delete();
+			}
+		}
+		
 		int n=dao.deleteBoard(num);
 		req.setAttribute("deleteDel", num);
 		String str=(n>0)?"글삭제 성공":"삭제실패";

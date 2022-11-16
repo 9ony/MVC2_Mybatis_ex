@@ -22,7 +22,11 @@
 			<td width="20%">작성자</td>
 			<td width="30%">${board.userid}</td>
 			<td width="20%">첨부파일</td>
-			<td width="30%">${board.filename} [ ${board.filesize } bytes]</td>
+			<td width="30%">
+			
+			<a href="Upload/${board.filename }" download>
+			<img src="images/attach.JPG" width="20px"">${board.filename} </a> <!-- 다운로드 링크로 설정 -->
+			[ ${board.filesize } bytes]</td>
 		</tr>
 		<tr>
 			<td width="20%">제목</td>

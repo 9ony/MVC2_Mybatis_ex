@@ -64,7 +64,21 @@ div.bbs{
 	<h1>Board 글쓰기</h1>
 	<br>
 	<div class="bbs">
-	<form name="boardf" id="boardFrm" action="boardWriteEnd.do" method="POST" onsubmit="return board_check()">
+	<!-- 첨부파일은 post로 get은 512byte밖에 안된다. 그래서 post를사용 -->
+	<%-- 
+	#파일 업로드시 주의사항
+	[1]파일을 서버에 업로드시키려면 form method방식은 반드시 post로 주어야 함 
+	[2]post방식일 경우 인코딩방식(enctype)이 2가지가 있는데
+		(1) application/x-www-form-urlencoded (디폴트)
+			=> 이 경우는 첨부된 파일이름만 서버에 전송된다.
+			
+		(2) multipart/form-data 
+		이 중 파일업로드를 하려면 (2) multipart/form-data 로 지정해야 한다.
+		    => 파일 이름과 함께 파일 데이터가 서버에 전송된다.
+
+	--%>
+	<form name="boardf" id="boardFrm" action="boardWriteEnd.do"
+	 method="POST" enctype="multipart/form-data" onsubmit="return board_check()">
 		<ul>
 			<li>제목</li>
 			<li>
