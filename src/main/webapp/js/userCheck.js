@@ -4,7 +4,7 @@
 let win=null;
 //아이디 중복검사 팝업
 function open_idcheck(){
-	win=window.open("idcheck.jsp","idCheck","width=400,height=400,left=200,top=200");
+	win=window.open("idCheck.do","idCheck","width=400,height=400,left=200,top=200");
 }
 //회원탈퇴 팝업
 function open_delcheck(){

@@ -91,6 +91,7 @@ public class FrontController extends HttpServlet {
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("GET ");
 		process(request,response);
 	}
 
@@ -107,7 +108,7 @@ public class FrontController extends HttpServlet {
 		String cmd=req.getServletPath(); //요청받은 uri를 cmd에 저장
 		System.out.println("cmd ==> "+cmd);
 		
-		Object instance = cmdMap.get(cmd); //cmdMap에서 ket값이 cmd인 객체를 instance에 저장하고
+		Object instance = cmdMap.get(cmd); //cmdMap에서 key값이 cmd인 객체를 instance에 저장하고
 		if(instance==null) {
 			System.out.println("Action이 null");
 			throw new ServletException("Action이 null입니다.");
@@ -125,6 +126,12 @@ public class FrontController extends HttpServlet {
 			if(viewPage==null) {
 				viewPage="index.jsp";
 			}
+//			if(viewPage.equals(cmd.trim().substring(1))) {
+//				Exception e = new Exception("무한루프가 돌아요"+action+".java 를 확인해보세요");
+//				System.out.println("무한루프가 돌아요"+action+".java 를 확인해보세요");
+//				viewPage="index.jsp";
+//				throw e;
+//			}
 			
 			if(isRedirect) {
 				//redirect방식으로 페이지 이동
@@ -145,7 +152,9 @@ public class FrontController extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		System.out.println("POST ");
+		
+		process(request, response);
 	}
 
 }

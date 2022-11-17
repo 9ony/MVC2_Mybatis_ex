@@ -1,7 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <!-- 주요기능 -->
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> <!-- fmt:포맷하는기능이 모여있음 -->
+<!-- 아래 태그 라이브러리 쓰는법(java인데 html태그처럼 쓸수 있게)
+https://tomcat.apache.org/download-taglibs.cgi 아래 jar파일을 받아
+WEB-INF/lib에 넣어둔다.
+이후 아래 페이지 태그참조 작성, 아래 리스트에서 태그 사용했음.
+ -->
+ <!-- core태그들 사용반복문 등 들어있음 -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- 포맷관련 태그.. -->
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/top.jsp"/>
 <style>
 	#boardWrap{
@@ -45,33 +52,16 @@
 		background-color:navy;
 	}
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
-	$(function(){
-		search_check=function(){
-			let key = $('#search_key').val();
-			let value = $('#search_value').val()
-			if(!key==''){
-				if(key=='num'){
-					let numcheck=/^[0-9]+$/;
-					if(value==''||numcheck.test(value)){
-						alert(value);
-					}else {
-						alert('숫자네요');
-					}
-				}else if(key=='subject'){
-					alert('subject');	
-				}else if(key=='content'){
-					alert('content');
-				}else{
-					alert('name');
-				}
-			}else{
-				alert('검색할 항목을 선택하세요')
+		function find_check(){
+			let $keyword = $('#findKeyword');
+			alert($keyword.val());
+			if(!$keyword.val()){
+				alert('검색어를 입력하세요');
 				return;
 			}
+			return true;
 		}
-	})
 </script>
 <div class="container">
 	<h1>게시글 목록</h1>
@@ -80,17 +70,21 @@
 		<%-- <h3>총 게시글 수 : ${totalCount}</h3> --%>
 		<%-- ${listBoard} --%>
 	</p>
-	<form id="search" name="search" action="boardList.do" method="get">
-		<select type="select" name="search_key" id="search_key">
-			<option value="">선택하세요</option>
-			<option value="num">번호</option>
-		    <option value="subject">제목</option>
-		    <option value="content">내용</option>
-		    <option value="userid">사용자</option>
-		</select>
-		<input type="search" name="search_value" id="search_value" width="100px">
-		<button type="button" onclick="search_check()">검색</button>
-	</form>
+	<br>
+	<div id="boardWrap" class="m2" style="margin:auto">
+		<div id="boardSearch" >
+			<form name="searchF" id="searchF" action="boardList.do" method="get" onsubmit="return find_check()">
+				<select name="findType" style="padding:5px">
+					<option value="1">제목</option>
+				    <option value="2">작성자</option>
+				    <option value="3">글내용</option>
+				</select>
+				<input type="search" name="findKeyword" id="findKeyword" width="100px">
+		<button>검색</button>
+			</form>
+		</div>
+	</div>
+		
 	<div id="boardWrap">
 		<ul id="boardList" class="boardList">
 			<li>번호</li>
@@ -124,17 +118,26 @@
 		<br><br>
 		<div class="pageWrap">
 			<ul class="paging">
-				<li style="width:50px"><a href="boardList.do?cpage=${cpage-1 }">
+				<li style="width:50px">
+				<a href="boardList.do?cpage=${cpage-1 }&${qStr}">
 				Prev</a></li>
 				<c:forEach var="i" begin="1" end="${pageCount}">
 					<c:if test="${cpage==i }">
-						<li class="current"><a href="boardList.do?cpage=${i }">${i }</a></li>
+						<li class="current">
+						<a href="boardList.do?cpage=${i }&${qStr}">
+						${i }</a>
+						</li>
 					</c:if>
 					<c:if test="${cpage!=i }">
-						<li><a href="boardList.do?cpage=${i }">${i }</a></li>
+						<li><a href="boardList.do?cpage=${i }&${qStr}">
+						${i }</a>
+						</li>
 					</c:if>
 				</c:forEach>
-				<li style="width:50px"><a href="boardList.do?cpage=${cpage+1}">Next</a></li>
+				<li style="width:50px">
+				<a href="boardList.do?cpage=${cpage+1}&${qStr}">
+				Next</a>
+				</li>
 			</ul>
 		</div>
 		<br><br>

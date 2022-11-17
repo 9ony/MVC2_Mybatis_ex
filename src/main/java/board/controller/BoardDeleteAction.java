@@ -4,15 +4,28 @@ import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import board.model.BoardDAOMyBatis;
 import board.model.BoardVO;
 import common.controller.AbstractAction;
+import user.model.UserVO;
 
 public class BoardDeleteAction extends AbstractAction {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		//로그인체크
+		HttpSession session=req.getSession();
+		UserVO user=(UserVO)session.getAttribute("loginUser");
+		if(user==null) {
+			req.setAttribute("msg","로그인해야 삭제가 가능해요");
+			req.setAttribute("loc","javascript:history.back()");
+			
+			this.setViewPage("message.jsp");
+			this.setRedirect(false);
+			return;
+		}
 		/*
 		 * BoardDeleteAction클래스 작성
 		*	[1] 삭제할 글 번호 받기
@@ -24,18 +37,30 @@ public class BoardDeleteAction extends AbstractAction {
 				=> message.jsp
 			--------------------------------------------------------------
 		 */
-		BoardDAOMyBatis dao=new BoardDAOMyBatis();
+		
 		String numstr = req.getParameter("num");
 		if(numstr==null||numstr.trim().isEmpty()) {
 			this.setViewPage("boardList.do");
 			this.setRedirect(true);
 			return;
 		}
+		
+		//dao 객체생성
+		BoardDAOMyBatis dao=new BoardDAOMyBatis();
+		
 		int num = Integer.parseInt(numstr.trim());
 		
 		//삭제할 객체 얻어오기
 		BoardVO vo=dao.viewBoard(num);
 		
+		if(!vo.getUserid().equals(user.getUserid())) {
+			req.setAttribute("msg","글쓴이만 가능해요");
+			req.setAttribute("loc","javascript:history.back()");
+			
+			this.setViewPage("message.jsp");
+			this.setRedirect(false);
+			return;
+		}
 		
 		if(vo.getFilename()!=null) {
 			//첨부파일이 있다면 삭제

@@ -10,10 +10,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- parameterType : 받아오는 타입을 기술해줘야한다 #파라미터명 으로 sql문에 기술 -->
 	<!-- select는 resultType을 기술해줘야함! -->
 	
+	<sql id="findWhere"> <!-- 조각 sql문을 만들어서 include해서 사용가능함! -->
+		<if test="findType!='' and findKeyword!=''">
+			<where>
+			<!-- 조건이 성립하면 where + 조건이맞는 구문 추가 -->
+				<if test="findType==1">
+					subject like '%'||#{findKeyword}||'%'
+				</if>
+				<if test="findType==2">
+					userid like '%'||#{findKeyword}||'%'
+				</if>
+				<if test="findType==3">
+					content like '%'||#{findKeyword}||'%'
+				</if>
+			</where>
+		</if>
+	</sql>
+	
+	
 	<!-- 글 전체 갯수 -->
-	<select id="totalCount" resultType="int">
+	<select id="totalCount" resultType="_int" parameterType="map">
 		select count(num) cnt from board
+		<!-- <if test="findType!='' and findKeyword!=''">
+			<where>
+				<if test="findType==1">
+					subject like '%'||#{findKeyword}||'%'
+				</if>
+				<if test="findType==2">
+					userid like '%'||#{findKeyword}||'%'
+				</if>
+				<if test="findType==3">
+					content like '%'||#{findKeyword}||'%'
+				</if>
+			</where>
+		</if> -->
+		<!-- insert에도 적용해야되서 sql조각을 만들어서 사용할것임 -->
+		<include refid="findWhere"/> <!-- sql조각 적용 // include refid=조각아이디 -->
 	</select>
+	
+	
 	<!-- 글쓰기 -->
 	<insert id="insertBoard" parameterType="Board">
 		<!-- board_seq.nextval를 num으로 키값을 설정해준다 -->
@@ -36,8 +71,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="listBoard" resultType="board.model.BoardVO" parameterType="map">
 	select * from (
     	select A.*,rownum rn from 
-        	(select board.* from board order by num desc) A
-	)where rn between #{start} and #{end}
+        	(select board.* from board 
+        	<include refid="findWhere"/>
+        	order by num desc) A
+	)where rn between #{start} and #{end} <!-- mapper에 부등호는 열고닿고를 의미해서 에러가남 그래서 between사용-->
 	</select>
 	<!-- 글목록 반환_old -->
 	<select id="listBoard_old" resultType="board.model.BoardVO">

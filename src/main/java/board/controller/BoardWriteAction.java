@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -13,15 +14,28 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import board.model.BoardDAOMyBatis;
 import board.model.BoardVO;
 import common.controller.AbstractAction;
+import user.model.UserVO;
 
 public class BoardWriteAction extends AbstractAction {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		
+		//로그인 여부 체크
+		HttpSession session=req.getSession();
+		UserVO user=(UserVO)session.getAttribute("loginUser");
+		if(user==null) {
+			req.setAttribute("msg","로그인해야 글쓰기가 가능해요");
+			req.setAttribute("loc","javascript:history.back()");
+			
+			this.setViewPage("message.jsp");
+			this.setRedirect(false);
+			return;
+		}
 		//1, 파일  업로드 처리==> 업로드 디렉토리의 절대경로 얻어보자. MvcWeb/src/main/webapp/Upload
 		ServletContext application=req.getServletContext();
 		String upDir=application.getRealPath("/Upload");
+
+		
 		System.out.println("upDir="+upDir);
 		File Folder = new File(upDir);
 		if (!Folder.exists()) { //폴더체크 false면 없는것
@@ -46,7 +60,7 @@ public class BoardWriteAction extends AbstractAction {
 		//req.setCharacterEncoding("UTF-8");
 		String subject=mr.getParameter("subject");
 		String content=mr.getParameter("content");
-		String userid="hong";
+		String userid=user.getUserid();
 		String filename=mr.getFilesystemName("filename");
 		
 		File file=mr.getFile("filename");

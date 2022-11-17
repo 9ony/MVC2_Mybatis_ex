@@ -29,9 +29,14 @@ public class BoardDAOMyBatis {
 		}
 	}//-------------세션팩토리에서 세션을 얻어오는 방법끝 -----------
 	
-	public int getTotalCount() {
+	public int getTotalCount(String type, String keyword) {
+		
+		Map<String, String> map=new HashMap<>();
+		map.put("findType", type);
+		map.put("findKeyword", keyword);
+		
 		ses = this.getSessionFactory().openSession(); //sql세션을 세션 팩토리에서 얻어온다
-		int count=ses.selectOne(NS+".totalCount");
+		int count=ses.selectOne(NS+".totalCount" , map);
 		if(ses!=null) ses.close();
 		return count;
 	}
@@ -49,12 +54,14 @@ public class BoardDAOMyBatis {
 		return n;
 	}
 
-	public List<BoardVO> listBoard(int start,int end) {
+	public List<BoardVO> listBoard(int start,int end, String type, String keyword) {
 		// TODO Auto-generated method stub
 		ses=this.getSessionFactory().openSession();
-		Map<String,Integer> map = new HashMap<>();
-		map.put("start",start);
-		map.put("end",end);
+		Map<String,String> map = new HashMap<>();
+		map.put("start",String.valueOf(start));
+		map.put("end",end+"");
+		map.put("findType", type);
+		map.put("findKeyword", keyword);
 		List<BoardVO> arr=ses.selectList(NS+".listBoard", map);
 		if(ses!=null) ses.close();
 		return arr;

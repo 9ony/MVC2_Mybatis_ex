@@ -6,6 +6,7 @@
 	<!-- !타입 별칭 설정 ======================= -->
 	<typeAliases>
 		<typeAlias type="board.model.BoardVO" alias="Board"/>
+		<typeAlias type="user.model.UserVO" alias="User"/>
 	</typeAliases>
 	
 	<!-- 데이터베이스 트랜잭션 관리자 설정============= -->
@@ -25,5 +26,6 @@
 	<mappers>
 		<!-- <mapper resource="org/mybatis/example/BlogMapper.xml" /> -->
 		<mapper resource="board/model/BoardMapper.xml" />
+		<mapper resource="user/model/UserMapper.xml" />
 	</mappers>
 </configuration>
