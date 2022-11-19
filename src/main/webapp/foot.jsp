@@ -41,12 +41,13 @@
 			       	<h3>${loginUser.name } [${loginUser.userid }]</h3>
 			       	<h3>로그인중.....</h3>
 			       	<br>
-			       	<h4><a href="logout.do">로그아웃</a></h4>
+			       	<h4><a href="${pageContext.request.contextPath}/logout.do">로그아웃</a></h4>
 		       	</div>
         	</div>
         </c:if>
             <ul>
                 <li><a onClick="history.back()" >뒤로가기</a></li>
+                <li><a href="<%=myctx %>/user/myPage.do">마이페이지</a></li>
             </ul>
         </nav>
 

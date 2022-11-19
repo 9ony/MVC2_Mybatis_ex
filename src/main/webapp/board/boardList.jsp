@@ -58,7 +58,7 @@ WEB-INF/lib에 넣어둔다.
 			alert($keyword.val());
 			if(!$keyword.val()){
 				alert('검색어를 입력하세요');
-				return;
+				return false;
 			}
 			return true;
 		}
@@ -66,7 +66,7 @@ WEB-INF/lib에 넣어둔다.
 <div class="container">
 	<h1>게시글 목록</h1>
 	<p>
-		<a href="boardWrite.do">글쓰기</a>|<a href="boardList.do">글목록</a>
+		<a href="user/boardWrite.do">글쓰기</a>|<a href="boardList.do">글목록</a>
 		<%-- <h3>총 게시글 수 : ${totalCount}</h3> --%>
 		<%-- ${listBoard} --%>
 	</p>

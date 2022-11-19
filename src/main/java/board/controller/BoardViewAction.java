@@ -15,15 +15,16 @@ public class BoardViewAction extends AbstractAction {
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		BoardDAOMyBatis dao=new BoardDAOMyBatis();
 		String numstr = req.getParameter("num");
+
 		if(numstr==null||numstr.trim().isEmpty()) {
 			this.setViewPage("boardList.do");
 			this.setRedirect(true);
 			return;
 		}
 		int num = Integer.parseInt(numstr.trim());
-		BoardVO boardview=dao.viewBoard(num);
+		BoardVO boardarr=dao.viewBoard(num);
 		
-		req.setAttribute("board", boardview);
+		req.setAttribute("board", boardarr);
 
 		this.setViewPage("board/boardView.jsp"); //경로
 		this.setRedirect(false); //포워드방식

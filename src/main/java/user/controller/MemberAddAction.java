@@ -11,7 +11,8 @@ public class MemberAddAction extends AbstractAction {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		req.setCharacterEncoding("UTF-8");
+		
+		//req.setCharacterEncoding("UTF-8"); <<인코딩 필터가 대신한다.
 		//1.이름,아이디,비밀번호,연락처,우편번호,주소1,주소2
 		String name = req.getParameter("name");
 		String userid = req.getParameter("userid");

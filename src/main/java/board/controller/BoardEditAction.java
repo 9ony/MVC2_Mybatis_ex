@@ -17,21 +17,22 @@ import common.controller.AbstractAction;
 import user.model.UserVO;
 
 public class BoardEditAction extends AbstractAction {
-
+//path : /user/BoardEdit.do
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		//로그인체크
+		//필터처리 LoginCheckFilter
 		HttpSession session=req.getSession();
 		UserVO user=(UserVO)session.getAttribute("loginUser");
-		if(user==null) {
-			req.setAttribute("msg","로그인해야 수정이 가능해요");
-			req.setAttribute("loc","javascript:history.back()");
-			
-			this.setViewPage("message.jsp");
-			this.setRedirect(false);
-			return;
-		}
-		//post일때 한글처리
+//		if(user==null) {
+//			req.setAttribute("msg","로그인해야 수정이 가능해요");
+//			req.setAttribute("loc","javascript:history.back()");
+//			
+//			this.setViewPage("message.jsp");
+//			this.setRedirect(false);
+//			return;
+//		}
+
 		ServletContext application=req.getServletContext();
 		String upDir=application.getRealPath("/Upload");
 		System.out.println("upDir="+upDir);
@@ -53,8 +54,8 @@ public class BoardEditAction extends AbstractAction {
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
-		
-		//req.setCharacterEncoding("UTF-8");
+		//post일때 한글처리
+		//req.setCharacterEncoding("UTF-8"); //필터링함
 		//1.값받아오기
 		String numStr=mr.getParameter("num");
 		String subject=mr.getParameter("subject");
@@ -83,7 +84,7 @@ public class BoardEditAction extends AbstractAction {
 		//2.유효성 검사
 		if(numStr==null||subject==null||userid==null||
 				numStr.trim().isEmpty()||content.trim().isEmpty()||userid.trim().isEmpty()) {
-			this.setViewPage("boardList.do");
+			this.setViewPage("../boardList.do");
 			this.setRedirect(true);
 			return;
 		}
@@ -97,12 +98,12 @@ public class BoardEditAction extends AbstractAction {
 		
 		// 5. req에 메시지 이동경로
 		String str=(n>0)?"글수정 성공":"글수정 실패";
-		String loc="boardList.do";
+		String loc="../boardList.do";
 		req.setAttribute("msg", str);
 		req.setAttribute("loc", loc);
 		
 		
-		this.setViewPage("message.jsp");
+		this.setViewPage("/message.jsp");
 		this.setRedirect(false);
 		
 		

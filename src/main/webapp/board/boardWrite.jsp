@@ -55,8 +55,8 @@ div.bbs{
 		return true;
 	}
 	function reset_btn(){
-		alert('dd');
-		//CKEDITOR.instances.content = "";
+		alert('리셋합니다');
+		CKEDITOR.instances.content.setData("");
 	}
 </script>
 
@@ -75,9 +75,11 @@ div.bbs{
 		(2) multipart/form-data 
 		이 중 파일업로드를 하려면 (2) multipart/form-data 로 지정해야 한다.
 		    => 파일 이름과 함께 파일 데이터가 서버에 전송된다.
-
+			
+			${pageContext.request.contextPath} ==> el표현식 컨텍스트명을 반환함 "/MvcWeb"
+			<%=request.getContextPath()%> 코드와 동일함
 	--%>
-	<form name="boardf" id="boardFrm" action="boardWriteEnd.do"
+	<form name="boardf" id="boardFrm" action="${pageContext.request.contextPath}/boardWriteEnd.do"
 	 method="POST" enctype="multipart/form-data" onsubmit="return board_check()">
 		<ul>
 			<li>제목</li>
@@ -94,7 +96,7 @@ div.bbs{
 			</li>
 			<li>
 				<button class="btn">글등록</button>
-				<button type="button" class="btn" onlick="reset_btn()">다시쓰기</button>
+				<button type="button" class="btn" onclick="reset_btn()">다시쓰기</button>
 			</li>
 		</ul>
 	</form>

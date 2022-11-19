@@ -43,9 +43,9 @@ public class BoardDAOMyBatis {
 	
 	public int insertBoard(BoardVO vo) {
 		ses=this.getSessionFactory().openSession();
-		System.out.println("insert: vo의 num(Mapper에 selectkey적용 전)  : "+vo.getNum());
+//		System.out.println("insert: vo의 num(Mapper에 selectkey적용 전)  : "+vo.getNum());
 		int n = ses.insert(NS+".insertBoard",vo);
-		System.out.println("insert: vo의 num(Mapper에 selectkey적용 후)  : "+vo.getNum());
+//		System.out.println("insert: vo의 num(Mapper에 selectkey적용 후)  : "+vo.getNum());
 		if(n>0) {
 			ses.commit();
 		}else {

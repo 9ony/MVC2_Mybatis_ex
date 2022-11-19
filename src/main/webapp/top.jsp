@@ -29,7 +29,7 @@
        
         <ul>
             <li><a href="<%=myctx%>/index.do">Home</a></li>
-            <li><a href="<%=myctx%>/boardWrite.do">게시글쓰기</a></li>          
+            <li><a href="<%=myctx%>/user/boardWrite.do">게시글쓰기</a></li>          
             <li><a href="<%=myctx%>/boardList.do">게시글 목록</a></li>
             <li><a href="<%=myctx%>/joinForm.do">회원가입</a></li>
             <!-- el표현식에서 eq(==와 동일하다), ne(!=와 동일함) -->

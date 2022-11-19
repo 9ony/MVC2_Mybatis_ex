@@ -18,14 +18,7 @@ public class BoardDeleteAction extends AbstractAction {
 		//로그인체크
 		HttpSession session=req.getSession();
 		UserVO user=(UserVO)session.getAttribute("loginUser");
-		if(user==null) {
-			req.setAttribute("msg","로그인해야 삭제가 가능해요");
-			req.setAttribute("loc","javascript:history.back()");
-			
-			this.setViewPage("message.jsp");
-			this.setRedirect(false);
-			return;
-		}
+		//로그인유무 필터 처리
 		/*
 		 * BoardDeleteAction클래스 작성
 		*	[1] 삭제할 글 번호 받기
@@ -40,7 +33,7 @@ public class BoardDeleteAction extends AbstractAction {
 		
 		String numstr = req.getParameter("num");
 		if(numstr==null||numstr.trim().isEmpty()) {
-			this.setViewPage("boardList.do");
+			this.setViewPage(req.getContextPath()+"/boardList.do");
 			this.setRedirect(true);
 			return;
 		}
@@ -57,7 +50,7 @@ public class BoardDeleteAction extends AbstractAction {
 			req.setAttribute("msg","글쓴이만 가능해요");
 			req.setAttribute("loc","javascript:history.back()");
 			
-			this.setViewPage("message.jsp");
+			this.setViewPage("/message.jsp");
 			this.setRedirect(false);
 			return;
 		}
@@ -77,9 +70,9 @@ public class BoardDeleteAction extends AbstractAction {
 		
 		
 		req.setAttribute("msg", str);
-		req.setAttribute("loc", "boardList.do");
+		req.setAttribute("loc","../boardList.do");
 		//뷰페이지,경로 지정
-		this.setViewPage("message.jsp");
+		this.setViewPage("/message.jsp");
 		//이동방식 지정 
 		this.setRedirect(false);// 포워드
 	}

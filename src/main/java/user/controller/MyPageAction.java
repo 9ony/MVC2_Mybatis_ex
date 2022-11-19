@@ -2,18 +2,16 @@ package user.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractAction;
-
-public class LogoutAction extends AbstractAction {
+// "/user/myPage.do ====>  /member/myPage.jsp
+public class MyPageAction extends AbstractAction {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		HttpSession session=req.getSession();
-		session.invalidate(); //모든 세션 제거
-		this.setViewPage("index.do");
-		this.setRedirect(true);
+		// TODO Auto-generated method stub
+		this.setViewPage("../member/myPage.jsp");
+		this.setRedirect(false);
 	}
 
 }

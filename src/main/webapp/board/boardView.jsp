@@ -52,12 +52,12 @@
 <!--  ---------------------->
 <script>
 	function goEdit(){
-		bf.action="boardEditForm.do";
+		bf.action="./user/boardEditForm.do";
 		bf.method='post'; //메소드 post로변경
 		bf.submit();
 	}
 	function goDel(){
-		bf.action="boardDel.do";
+		bf.action="./user/boardDel.do";
 		bf.method='post'; //메소드 post로변경
 		bf.submit();
 	}

@@ -16,20 +16,21 @@ public class BoardEditFormAction extends AbstractAction {
 		//로그인체크
 		HttpSession session=req.getSession();
 		UserVO user=(UserVO)session.getAttribute("loginUser");
-		if(user==null) {
-			req.setAttribute("msg","로그인해야 가능해요");
-			req.setAttribute("loc","javascript:history.back()");
-			
-			this.setViewPage("message.jsp");
-			this.setRedirect(false);
-			return;
-		}
+//		if(user==null) {
+//			req.setAttribute("msg","로그인해야 가능해요");
+//			req.setAttribute("loc","javascript:history.back()");
+//			
+//			this.setViewPage("message.jsp");
+//			this.setRedirect(false);
+//			return;
+//		}
 		// 1. 수정할 글번호 받기
 		BoardDAOMyBatis dao=new BoardDAOMyBatis();
 		String numstr = req.getParameter("num");
+//		numstr = " "; //test
 		// 2. 유효성 체크
 		if(numstr==null||numstr.trim().isEmpty()) {
-			this.setViewPage("boardList.do");
+			this.setViewPage("../boardList.do");
 			this.setRedirect(true);
 			return;
 		}
@@ -40,7 +41,7 @@ public class BoardEditFormAction extends AbstractAction {
 			req.setAttribute("msg","글쓴이만 수정이 가능해요");
 			req.setAttribute("loc","javascript:history.back()");
 			
-			this.setViewPage("message.jsp");
+			this.setViewPage("/message.jsp");
 			this.setRedirect(false);
 			return;
 		}
@@ -48,7 +49,7 @@ public class BoardEditFormAction extends AbstractAction {
 		req.setAttribute("board", boardview);
 		
 		// 5. view페이지는 boardEdit.jsp
-		this.setViewPage("board/boardEdit.jsp");
+		this.setViewPage("/board/boardEdit.jsp");
 		this.setRedirect(false);
 	}
 

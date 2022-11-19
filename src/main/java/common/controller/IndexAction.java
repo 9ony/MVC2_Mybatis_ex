@@ -10,7 +10,7 @@ public class IndexAction extends AbstractAction {
 		System.out.println("IndexAction의 excute()호출됨...");
 		
 		req.setAttribute("msg", "안녕 인덱스??");
-		
+
 		//뷰페이지 지정
 		this.setViewPage("/index.jsp");
 		//이동방식 지정

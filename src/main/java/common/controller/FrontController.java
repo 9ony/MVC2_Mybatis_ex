@@ -126,12 +126,12 @@ public class FrontController extends HttpServlet {
 			if(viewPage==null) {
 				viewPage="index.jsp";
 			}
-//			if(viewPage.equals(cmd.trim().substring(1))) {
-//				Exception e = new Exception("무한루프가 돌아요"+action+".java 를 확인해보세요");
-//				System.out.println("무한루프가 돌아요"+action+".java 를 확인해보세요");
-//				viewPage="index.jsp";
-//				throw e;
-//			}
+			if(viewPage.equals(cmd.trim().substring(1))) {
+				Exception e = new Exception("무한루프가 돌아요"+action+".java 를 확인해보세요");
+				System.out.println("무한루프가 돌아요"+action+".java 를 확인해보세요");
+				viewPage="index.jsp";
+				throw e;
+			}
 			
 			if(isRedirect) {
 				//redirect방식으로 페이지 이동
